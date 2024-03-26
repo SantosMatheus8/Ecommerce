@@ -1,0 +1,1548 @@
+openapi: 3.0.0
+info:
+  title: Code Gen
+  description: Optional multiline or single-line description in or HTML.
+  version: 1.0.0
+paths:
+  "/auth/v1/change-password":
+    post:
+      operationId: changePassword
+      summary: Change user password
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ChangePasswordDto"
+      responses:
+        '200':
+          description: Password changed with success
+        '400':
+          &Default400Response
+          description: 'Bad Request: Invalid request payload'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+        '422':
+          &Default422Response
+          description: 'Unprocessable Entitiy: Invalid data in the request'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessageUnprocessableEntity"
+        '500':
+          &Default500Response
+          description: 'Internal Server Error: Some unexpected error related to internal
+            infra-structure.'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+      tags:
+      - Authentication
+  "/auth/v1/forgot-password":
+    post:
+      operationId: forgotPassword
+      summary: Send email to reset user password
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ForgotPasswordDto"
+      responses:
+        '200':
+          description: Reset password email sended with success
+        '400':
+          *Default400Response
+        '422':
+          *Default422Response
+        '500':
+          *Default500Response
+      tags:
+      - Authentication
+  "/auth/v1/login":
+    post:
+      operationId: login
+      summary: Log in the application
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AuthUser"
+      responses:
+        '200':
+          description: User logged in with success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LoginResponseDto"
+        '400':
+          *Default400Response
+        '422':
+          *Default422Response
+        '500':
+          *Default500Response
+      tags:
+      - Authentication
+  "/auth/v1/refresh-token":
+    post:
+      operationId: refreshToken
+      summary: Generates new access
+      parameters: []
+      responses:
+        '200':
+          description: User logged in with success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LoginResponseDto"
+        '401':
+          &Default401Response
+          description: 'Not Authorized: Missing or Expired Authentication parameters'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+        '403':
+          &Default403Response
+          description: "Forbidden: Mostly due to current user hasn't the needed AccessProfile
+            to perform this operation."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+        '400':
+          *Default400Response
+        '500':
+          *Default500Response
+      tags:
+      - Authentication
+      security:
+      - authentication: []
+  "/auth/v1/login-azure":
+    post:
+      operationId: loginAzure
+      summary: Log in the application with Azure
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OAuthUser"
+      responses:
+        '201':
+          description: User logged in with success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LoginResponseDto"
+        '400':
+          *Default400Response
+        '422':
+          *Default422Response
+        '500':
+          *Default500Response
+      tags:
+      - Authentication
+  "/auth/v1/login-google":
+    post:
+      operationId: loginGoogle
+      summary: Log in the application with Google
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OAuthUser"
+      responses:
+        '201':
+          description: User logged in with success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LoginResponseDto"
+        '400':
+          *Default400Response
+        '422':
+          *Default422Response
+        '500':
+          *Default500Response
+      tags:
+      - Authentication
+  "/auth/v1/logout":
+    post:
+      operationId: logout
+      summary: Logout from application
+      parameters: []
+      responses:
+        '204':
+          description: User logged out with success
+        '401':
+          *Default401Response
+        '500':
+          *Default500Response
+      tags:
+      - Authentication
+      security:
+      - authentication: []
+  "/users/v1/users":
+    post:
+      operationId: createUser
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CreateUserDto"
+      responses:
+        '201':
+          description: User successfully created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/DetailedUserResponse"
+        '400':
+          *Default400Response
+        '401':
+          *Default401Response
+        '403':
+          *Default403Response
+        '422':
+          *Default422Response
+        '500':
+          *Default500Response
+      tags:
+      - Users
+    get:
+      operationId: findUsers
+      summary: Get all users or filter by query params
+      parameters:
+      - name: page
+        required: true
+        in: query
+        description: The number of desired page. Starts with 1.
+        example: 1
+        schema:
+          type: number
+      - name: itemsPerPage
+        required: true
+        in: query
+        description: The maximum number of rows to contain in current page.
+        schema:
+          minimum: 1
+          maximum: 100
+          default: 10
+          type: number
+      - name: orderDirection
+        required: false
+        in: query
+        description: Ordering direction
+        example: DESC
+        schema:
+          default: DESC
+          enum:
+          - ASC
+          - DESC
+          type: string
+      - name: name
+        required: false
+        in: query
+        description: Search by name
+        schema:
+          type: string
+      - name: email
+        required: false
+        in: query
+        description: Search by email
+        schema:
+          type: string
+      - name: status
+        required: false
+        in: query
+        description: Search by status
+        schema:
+          enum:
+          - PENDING
+          - ACTIVE
+          - INACTIVE
+          - BLOCKED
+          type: string
+      - name: orderBy
+        required: false
+        in: query
+        description: Field to order
+        schema:
+          enum:
+          - name
+          - status
+          - email
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - rows
+                - page
+                - totalRows
+                properties:
+                  rows:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/UserResponse"
+                  page:
+                    type: number
+                    example: 1
+                  totalRows:
+                    type: number
+                    example: 1
+        '400':
+          *Default400Response
+        '401':
+          *Default401Response
+        '403':
+          *Default403Response
+        '500':
+          *Default500Response
+      tags:
+      - Users
+      security:
+      - authentication: []
+  "/users/v1/users/{id}/inactivate":
+    post:
+      operationId: inactivateUser
+      summary: Inactivate user
+      description: set user status to "INACTIVE"
+      parameters:
+      - name: id
+        required: true
+        in: path
+        schema:
+          type: number
+      - name: user-id
+        required: false
+        in: header
+        description: Leave empty, the code automatically gets the user-id from token
+        schema:
+          type: string
+      responses:
+        '200':
+          description: User successfully inactivated
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserResponse"
+        '400':
+          *Default400Response
+        '401':
+          *Default401Response
+        '403':
+          *Default403Response
+        '404':
+          &Default404Response
+          description: 'Not Found: The entity provided was not found in our database'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+        '422':
+          description: Due to system constraints was not possible to created the given
+            entity. Probably other exists with the same name.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessageUnprocessableEntity"
+        '500':
+          *Default500Response
+      tags:
+      - Users
+      security:
+      - authentication: []
+  "/users/v1/users/{id}/activate":
+    post:
+      operationId: activateUser
+      summary: Activate user
+      description: set user status to "ACTIVE"
+      parameters:
+      - name: id
+        required: true
+        in: path
+        schema:
+          type: number
+      responses:
+        '200':
+          description: User successfully activated
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserResponse"
+        '400':
+          *Default400Response
+        '401':
+          *Default401Response
+        '403':
+          *Default403Response
+        '404':
+          *Default404Response
+        '422':
+          description: Due to system constraints was not possible to created the given
+            entity. Probably other exists with the same name.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessageUnprocessableEntity"
+        '500':
+          *Default500Response
+      tags:
+      - Users
+      security:
+      - authentication: []
+  "/users/v1/users/{id}":
+    get:
+      operationId: findUserById
+      summary: Find an user by id
+      parameters:
+      - name: id
+        required: true
+        in: path
+        schema:
+          type: number
+      - name: features-ids
+        required: false
+        in: header
+        description: Leave empty, the code automatically gets the permissions-ids
+          from token
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: Return a user
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/DetailedUserResponse"
+        '400':
+          *Default400Response
+        '401':
+          *Default401Response
+        '403':
+          *Default403Response
+        '404':
+          *Default404Response
+        '500':
+          *Default500Response
+      tags:
+      - Users
+      security:
+      - authentication: []
+    put:
+      operationId: updateUser
+      summary: Update an user
+      parameters:
+      - name: id
+        required: true
+        in: path
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UpdateUserDto"
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/DetailedUserResponse"
+        '400':
+          *Default400Response
+        '401':
+          *Default401Response
+        '403':
+          *Default403Response
+        '404':
+          description: User not found
+        '422':
+          description: Due to system constraints was not possible to created the given
+            entity. Probably other exists with the same name.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessageUnprocessableEntity"
+        '500':
+          *Default500Response
+      tags:
+      - Users
+      security:
+      - authentication: []
+    delete:
+      operationId: deleteUser
+      summary: Delete an user
+      parameters:
+      - name: id
+        required: true
+        in: path
+        schema:
+          type: string
+      responses:
+        '204':
+          description: 'User deleted successfully'
+        '400':
+          *Default400Response
+        '401':
+          *Default401Response
+        '403':
+          *Default403Response
+        '404':
+          description: 'Not Found: The entity provided was not found in our
+            database'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+        '422':
+          description: Due to system constraints was not possible to created the given
+            entity. Probably other exists with the same name.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessageUnprocessableEntity"
+        '500':
+          *Default500Response
+      tags:
+      - Users
+      security:
+      - authentication: []
+  "/users/v1/users/{id}/unblock":
+    post:
+      operationId: UnblockUser
+      summary: Unblock user
+      description: set user status to "ACTIVE"
+      parameters:
+      - name: id
+        required: true
+        in: path
+        schema:
+          type: number
+      - name: user-id
+        required: false
+        in: header
+        description: Leave empty, the code automatically gets the user-id from token
+        schema:
+          type: string
+      responses:
+        '200':
+          description: User successfully inactivated
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserResponse"
+        '400':
+          *Default400Response
+        '401':
+          *Default401Response
+        '403':
+          *Default403Response
+        '404':
+          description: 'Not Found: The entity provided was not found in our
+            database'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+        '422':
+          description: Due to system constraints was not possible to created the given
+            entity. Probably other exists with the same name.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessageUnprocessableEntity"
+        '500':
+          *Default500Response
+      tags:
+      - Users
+      security:
+      - authentication: []
+  "/users/v1/users/{id}/block":
+    post:
+      operationId: BlockUser
+      summary: Block user
+      description: set user status to "BLOCKED"
+      parameters:
+      - name: id
+        required: true
+        in: path
+        schema:
+          type: number
+      responses:
+        '200':
+          description: User successfully activated
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserResponse"
+        '400':
+          *Default400Response
+        '401':
+          *Default401Response
+        '403':
+          *Default403Response
+        '404':
+          description: 'Not Found: The entity provided was not found in our
+            database'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+        '422':
+          description: Due to system constraints was not possible to created the given
+            entity. Probably other exists with the same name.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessageUnprocessableEntity"
+        '500':
+          *Default500Response
+      tags:
+      - Users
+      security:
+      - authentication: []
+  "/access-profiles/v1/access-profiles":
+    post:
+      operationId: createAccessProfile
+      summary: Create a new access profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CreateAccessProfileDto"
+      responses:
+        '201':
+          description: Access Profile Created with Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/DetailedAccessProfileResponse"
+        '400':
+          *Default400Response
+        '401':
+          *Default401Response
+        '403':
+          *Default403Response
+        '422':
+          description: Due to system constraints was not possible to created the given
+            entity. Probably other exists with the same name.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessageUnprocessableEntity"
+        '500':
+          *Default500Response
+      tags:
+      - Access Profiles
+      security:
+      - authentication: []
+    get:
+      operationId: findAllAccessProfiles
+      summary: List all Access Profiles
+      parameters:
+      - name: page
+        required: true
+        in: query
+        description: The number of desired page. Starts with 1.
+        example: 1
+        schema:
+          type: number
+      - name: itemsPerPage
+        required: true
+        in: query
+        description: The maximum number of rows to contain in current page.
+        schema:
+          minimum: 1
+          maximum: 100
+          default: 10
+          type: number
+      - name: orderDirection
+        required: false
+        in: query
+        description: Ordering direction
+        example: DESC
+        schema:
+          default: DESC
+          enum:
+          - ASC
+          - DESC
+          type: string
+      - name: name
+        required: false
+        in: query
+        description: Sort by accessProfile name
+        schema:
+          type: string
+      - name: admin
+        required: false
+        in: query
+        description: Search by features only available for admin
+        schema:
+          type: boolean
+      - name: orderBy
+        required: false
+        in: query
+        description: Property to order by
+        schema:
+          default: id
+          enum:
+          - id
+          - name
+          - admin
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                - page
+                - total
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/AccessProfileResponse"
+                  page:
+                    type: number
+                    example: 1
+                  total:
+                    type: number
+                    example: 1
+        '400':
+          *Default400Response
+        '401':
+          *Default401Response
+        '403':
+          *Default403Response
+        '404':
+          description: 'Not Found: The entity provided was not found in our
+            database'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+        '500':
+          *Default500Response
+      tags:
+      - Access Profiles
+      security:
+      - authentication: []
+  "/access-profiles/v1/access-profiles/{id}":
+    get:
+      operationId: getAccessProfileById
+      summary: Find an access profile by id
+      parameters:
+      - name: id
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: features-ids
+        required: false
+        in: header
+        description: Leave empty, the code automatically gets the permissions-ids
+          from token
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: Access Profile deleted with Success.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/DetailedAccessProfileResponse"
+        '400':
+          *Default400Response
+        '401':
+          *Default401Response
+        '403':
+          *Default403Response
+        '422':
+          description: Due to system constraints was not possible to created the given
+            entity. Probably other exists with the same name.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessageUnprocessableEntity"
+        '500':
+          *Default500Response
+      tags:
+      - Access Profiles
+      security:
+      - authentication: []
+    put:
+      operationId: updateAccessProfile
+      summary: Update an access profile
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Access Profile Id
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UpdateAccessProfileDto"
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/DetailedAccessProfileResponse"
+        '400':
+          *Default400Response
+        '401':
+          *Default401Response
+        '403':
+          *Default403Response
+        '404':
+          *Default404Response
+        '422':
+          *Default422Response
+        '500':
+          *Default500Response
+      tags:
+      - Access Profiles
+      security:
+      - authentication: []
+    delete:
+      operationId: removeAccessProfile
+      summary: Delete the given Access Profile and its values
+      parameters:
+      - name: id
+        required: true
+        in: path
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Access Profile deleted with Success.
+        '400':
+          *Default400Response
+        '401':
+          *Default401Response
+        '403':
+          *Default403Response
+        '404':
+          *Default404Response
+        '422':
+          *Default422Response
+        '500':
+          *Default500Response
+      tags:
+      - Access Profiles
+      security:
+      - authentication: []
+  "/access-profiles/v1/access-profiles/{id}/associate-users":
+    post:
+      operationId: createUserAccessProfileRelation
+      summary: Link users to an access profile
+      parameters:
+      - name: id
+        required: true
+        in: path
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CreateUserAccessProfileRelationDto"
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/DetailedAccessProfileResponseWithUsers"
+        '400':
+          *Default400Response
+        '401':
+          *Default401Response
+        '403':
+          *Default403Response
+        '422':
+          description: Due to system constraints was not possible to created the given
+            entity. Probably other exists with the same name.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessageUnprocessableEntity"
+        '500':
+          *Default500Response
+      tags:
+      - Access Profiles
+      security:
+      - authentication: []
+  "/access-profiles/v1/features-routes":
+    get:
+      operationId: findAllRoutes
+      summary: List Features routes for Access Profiles
+      parameters:
+      - name: page
+        required: true
+        in: query
+        description: The number of desired page. Starts with 1.
+        example: 1
+        schema:
+          type: number
+      - name: items_per_page
+        required: true
+        in: query
+        description: The maximum number of rows to contain in current page.
+        schema:
+          minimum: 1
+          maximum: 100
+          default: 10
+          type: number
+      - name: orderDirection
+        required: false
+        in: query
+        description: Ordering direction
+        example: DESC
+        schema:
+          default: DESC
+          enum:
+          - ASC
+          - DESC
+          type: string
+      - name: uri
+        required: false
+        in: query
+        description: Search routes by URI
+        example: "/api/v1/users"
+        schema:
+          type: string
+      - name: isPublic
+        required: false
+        in: query
+        description: Search routes by visibility
+        example: 'true'
+        schema:
+          type: boolean
+      - name: verb
+        required: false
+        in: query
+        description: Search routes by HTTP verb
+        example: GET
+        schema:
+          type: string
+      - name: orderBy
+        required: false
+        in: query
+        description: Property to order by
+        schema:
+          default: id
+          enum:
+          - id
+          - verb
+          - uri
+          - isPublic
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                - page
+                - total
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/FeatureRouteDto"
+                  page:
+                    type: number
+                    example: 1
+                  total:
+                    type: number
+                    example: 1
+        '400':
+          *Default400Response
+        '401':
+          *Default401Response
+        '403':
+          *Default403Response
+        '404':
+          *Default404Response
+        '500':
+          *Default500Response
+      tags:
+      - Access Profiles
+      security:
+      - authentication: []
+  "/features-routes/v1/features":
+    get:
+      operationId: findAllFeatures
+      summary: List Features
+      parameters:
+      - name: page
+        required: true
+        in: query
+        description: The number of desired page. Starts with 1.
+        example: 1
+        schema:
+          type: number
+      - name: itemsPerPage
+        required: true
+        in: query
+        description: The maximum number of rows to contain in current page.
+        schema:
+          minimum: 1
+          maximum: 100
+          default: 10
+          type: number
+      - name: orderDirection
+        required: false
+        in: query
+        description: Ordering direction
+        example: DESC
+        schema:
+          default: DESC
+          enum:
+          - ASC
+          - DESC
+          type: string
+      - name: active
+        required: false
+        in: query
+        description: Sort by active features
+        schema:
+          type: boolean
+      - name: isAdmin
+        required: false
+        in: query
+        description: Search by features only available for admin
+        schema:
+          type: boolean
+      - name: orderBy
+        required: false
+        in: query
+        description: Property to order by
+        schema:
+          default: id
+          enum:
+          - id
+          - description
+          - active
+          - isAdmin
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                - page
+                - total
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/FeatureDto"
+                  page:
+                    type: number
+                    example: 1
+                  total:
+                    type: number
+                    example: 1
+        '400':
+          *Default400Response
+        '401':
+          *Default401Response
+        '403':
+          *Default403Response
+        '404':
+          description: 'Not Found: The entity provided was not found in our
+            database'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorMessage"
+        '500':
+          *Default500Response
+      tags:
+      - Access Profiles
+      security:
+      - authentication: []
+tags:
+- name: Authentication
+  description: Authentication routes
+- name: Access Profiles
+  description: Access control routes
+- name: Users
+  description: Users routes
+servers: []
+components:
+  securitySchemes:
+    authentication:
+      type: http
+      scheme: bearer
+  schemas:
+    ChangePasswordDto:
+      type: object
+      properties:
+        newPassword:
+          type: string
+          example: 'password'
+        token:
+          type: string
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
+      required:
+      - newPassword
+      - token
+    ErrorMessage:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Unexpected error
+      required:
+      - message
+    ForgotPasswordDto:
+      type: object
+      properties:
+        email:
+          type: string
+          description: User email
+          example: 'joedoe@example.com'
+      required:
+      - email
+    AuthUser:
+      type: object
+      properties:
+        email:
+          type: string
+          description: User email (must be unique)
+          example: 'joedoe@example.com'
+        password:
+          type: string
+          description: User password
+          example: 'password'
+      required:
+      - email
+      - password
+    LoginResponseDto:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: User access token
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
+        refreshToken:
+          type: string
+          description: User refresh token
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
+      required:
+      - access_token
+    OAuthUser:
+      type: object
+      properties:
+        externalToken:
+          type: string
+          description: User access token
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
+      required:
+      - accessToken
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 5
+        name:
+          type: string
+          example: Joe Doe
+        email:
+          type: string
+          example: joedoes@example.com
+        status:
+          enum:
+          - PENDING
+          - ACTIVE
+          - INACTIVE
+          - BLOCKED
+          type: string
+        avatar:
+          type: string
+      required:
+      - id
+      - name
+      - email
+      - status
+    Pagination:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        page:
+          type: number
+          description: Page number
+        total:
+          type: number
+          description: Total of pages
+      required:
+      - data
+      - page
+      - total
+    ErrorMessageUnprocessableEntity:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Erro ao cadastrar a entidade no banco de dados.
+          description: Error message title
+        fields:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: description
+                description: Field name that generated the error
+              message:
+                type: string
+                example: não pode ficar em branco
+                description: Describes the problem that generated the error
+            required:
+            - field
+            - message
+      required:
+      - message
+      - fields
+    CreateUserDto:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'Joe Doe'
+        email:
+          type: string
+          example: 'joedoe@example.com'
+        password:
+          type: string
+        accessProfilesIds:
+          type: array
+          items:
+            type: number
+        avatar:
+          type: string
+      required:
+      - name
+      - email
+      - password
+      - accessProfilesIds
+    DetailedUserResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        name:
+          type: string
+          example: Joe Doe
+        email:
+          type: string
+          example: joedoe@example.com
+        status:
+          enum:
+          - PENDING
+          - ACTIVE
+          - INACTIVE
+          - BLOCKED
+          type: string
+        accessProfilesIds:
+          type: array
+          items:
+            type: number
+          example: [1,2,3]
+        avatar:
+          type: string
+      required:
+      - id
+      - name
+      - email
+      - status
+      - accessProfilesIds
+    UpdateUserDto:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Joe Doe
+        email:
+          type: string
+          example: joedoe@example.com
+        accessProfilesIds:
+          type: array
+          items:
+            type: number
+          example: [21, 3, 5]
+        avatar:
+          type: string
+      required:
+      - name
+      - email
+      - accessProfilesIds
+    FeatureDto:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Feature Id
+          example: 1
+        description:
+          type: string
+          description: Feature description
+          example: Gerenciar usuários
+        active:
+          type: boolean
+          description: Describe if the feature is active
+          example: true
+        isAdmin:
+          type: boolean
+          description: Describe if the feature is only for admins
+          example: true
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+      - id
+      - description
+      - active
+      - isAdmin
+      - createdAt
+      - updatedAt
+    FeatureRouteDto:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Feature route Id
+          example: 1
+        uri:
+          type: string
+          description: URI da rota
+          example: "/api/v1/users"
+        verb:
+          type: string
+          description: Verbo HTTP da rota
+          example: POST
+        isPublic:
+          type: boolean
+          description: Visibilidade da rota
+          example: 'false'
+      required:
+      - id
+      - uri
+      - verb
+      - isPublic
+    UpdateAccessProfileDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Profile name
+          example: basic
+        admin:
+          type: boolean
+          description: Is admin
+          example: false
+        featuresIds:
+          description: access features ids
+          example:
+          - 0
+          type: array
+          items:
+            type: number
+      required:
+      - name
+      - admin
+      - featuresIds
+    CreateUserAccessProfileRelationDto:
+      type: object
+      properties:
+        userIds:
+          description: User Ids
+          example:
+          - 1
+          - 2
+          - 3
+          type: array
+          items:
+            type: number
+      required:
+      - userIds
+    DetailedAccessProfileResponseWithUsers:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Access ProfileID
+          example: 1
+        name:
+          type: string
+          description: Access Profile name
+          example: DHO
+        admin:
+          type: boolean
+          description: Is an admin access profile?
+          example: true
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        userIds:
+          description: Access Profile users ids
+          example:
+          - 1
+          - 2
+          - 3
+          type: array
+          items:
+            type: number
+      required:
+      - id
+      - name
+      - admin
+      - createdAt
+      - updatedAt
+      - userIds
+    DetailedAccessProfileResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Access ProfileID
+          example: 1
+        name:
+          type: string
+          description: Access Profile name
+          example: DHO
+        admin:
+          type: boolean
+          description: Is an admin access profile?
+          example: true
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        featuresIds:
+          description: Access Profile features ids
+          example:
+          - 1
+          - 2
+          - 3
+          type: array
+          items:
+            type: number
+      required:
+      - id
+      - name
+      - admin
+      - createdAt
+      - updatedAt
+      - featuresIds
+    AccessProfileResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Access ProfileID
+          example: 1
+        name:
+          type: string
+          description: Access Profile name
+          example: DHO
+        admin:
+          type: boolean
+          description: Is an admin access profile?
+          example: true
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+      - id
+      - name
+      - admin
+      - createdAt
+      - updatedAt
+    CreateAccessProfileDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: AccessProfile name
+          example: DHO
+        admin:
+          type: boolean
+          description: Describe if is an admin access profile
+          example: true
+        featuresIds:
+          description: Features Ids
+          example:
+          - 1
+          - 2
+          - 3
+          type: array
+          items:
+            type: number
+      required:
+      - name
+      - admin
+      - featuresIds
