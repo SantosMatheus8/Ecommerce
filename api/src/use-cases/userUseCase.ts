@@ -30,6 +30,7 @@ export class UserUseCase {
     newUser.avatar = user.avatar;
     newUser.phoneNumber = user.phoneNumber;
     newUser.accessProfiles = accessProfiles;
+    newUser.status = UserStatusEnum.PENDING;
     // const newUser = new User(
     //   user.name,
     //   user.email,
