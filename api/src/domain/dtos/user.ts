@@ -12,7 +12,6 @@ export type CreateUser = {
   password: string
   avatar?: string
   phoneNumber?: string
-  accessProfilesIds: number[]
 };
 
 export type UserResponse = {
@@ -23,10 +22,6 @@ export type UserResponse = {
   phoneNumber?: string
   status: UserStatusEnum
 };
-
-export type UserAccessProfileResponse = {
-  accessProfilesIds: number[]
-} & UserResponse;
 
 export type QueryUsers = {
   name?: string
@@ -43,5 +38,4 @@ export type UpdateUser = {
   email: string
   avatar: string
   phoneNumber: string
-  accessProfilesIds: number[]
 };

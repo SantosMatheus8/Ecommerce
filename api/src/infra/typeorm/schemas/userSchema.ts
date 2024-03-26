@@ -1,11 +1,7 @@
 import { EntitySchema } from "typeorm";
-import { AccessProfile } from "../../../domain/models/accessProfile";
 import { User, UserStatusEnum } from "../../../domain/models/user";
 
-export const userSchema = new EntitySchema
-<
-User & { accessProfiles: AccessProfile }
->({
+export const userSchema = new EntitySchema<User>({
   target: User,
   name: "users",
   tableName: "users",
@@ -54,20 +50,6 @@ User & { accessProfiles: AccessProfile }
     confirmedAt: {
       name: "confirmed_at",
       type: Date,
-    },
-  },
-  relations: {
-    accessProfiles: {
-      target: "access_profiles",
-      type: "many-to-many",
-      joinTable: {
-        name: "user_access_profiles",
-        joinColumn: { name: "user_id", referencedColumnName: "id" },
-        inverseJoinColumn: {
-          name: "access_profile_id",
-          referencedColumnName: "id",
-        },
-      },
     },
   },
 });

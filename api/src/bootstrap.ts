@@ -63,10 +63,10 @@ export const jwtSessionTokenService = new JwtSessionTokenService(
 
 // Use-Cases
 // export conAst userUseCase = new UserUseCase(userRepository, accessProfileRepository);
-const userUserCaset = UserUseCase.instance;
-// userUserCaset.accessProfileRepository = accessProfileRepository;
-userUserCaset.userRepository = userRepository;
-export const userUserCase = userUserCaset;
+const userUserCaseS = UserUseCase.instance;
+// userUserCaseS.accessProfileRepository = accessProfileRepository;
+userUserCaseS.userRepository = userRepository;
+export const userUserCase = userUserCaseS;
 export const authUseCase = new AuthenticationUseCase(
   userRepository,
   jwtSessionTokenService
@@ -74,7 +74,10 @@ export const authUseCase = new AuthenticationUseCase(
 // const accessProfileUseCase = new AccessProfileUseCase(accessProfileRepository, featureRepository, routesFeatureRepository, userRepository);
 
 // Controllers
-export const userController = new UserController(userUserCaset);
+const usercontrollerS = UserController.instance;
+usercontrollerS.userUseCase = userUserCase;
+export const userController = usercontrollerS;
+// export const userController = new UserController(userUserCaset);
 export const authController = new AuthController(authUseCase);
 // export const accessProfileController = new AccessProfileController(accessProfileUseCase);
 

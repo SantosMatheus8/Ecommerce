@@ -14,10 +14,10 @@ export class TypeORMUserRepository extends TypeORMRepository<User> implements Us
   }
 
   public async findByIds(ids: number[]): Promise<User[]> {
-    return await this.repository.find({ where: { id: In(ids) }, relations: ["accessProfiles"] });
+    return await this.repository.find({ where: { id: In(ids) } });
   }
 
   public async findOne(id: number): Promise<User | null> {
-    return await this.repository.findOne({ where: { id }, relations: ["accessProfiles"] });
+    return await this.repository.findOne({ where: { id } });
   }
 }

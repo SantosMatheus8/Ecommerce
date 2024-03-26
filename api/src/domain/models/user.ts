@@ -1,5 +1,4 @@
 import crypto from "crypto";
-import { AccessProfile } from "./accessProfile";
 
 export enum UserStatusEnum {
   PENDING = "PENDING",
@@ -15,7 +14,6 @@ export class User {
   name: string;
   email: string;
   password: string;
-  accessProfiles?: AccessProfile[];
   avatar?: string;
   phoneNumber?: string;
   createdAt?: Date;

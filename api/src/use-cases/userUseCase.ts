@@ -3,12 +3,10 @@ import { User, UserStatusEnum } from "../domain/models/user";
 import { UserRepository } from "../domain/ports/userRepository";
 import { Page, PaginatedFindConditions } from "../domain/dtos/generic";
 import { NotFoundError, UnprocessableEntityError } from "../domain/dtos/errors";
-import { AccessProfileRepository } from "../domain/ports/accessProfileRepository";
 
 export class UserUseCase {
   private static _instance: UserUseCase | null = null;
   userRepository: UserRepository;
-  accessProfileRepository: AccessProfileRepository;
   static get instance(): UserUseCase {
     if (UserUseCase._instance === null) {
       UserUseCase._instance = new UserUseCase();
@@ -19,9 +17,6 @@ export class UserUseCase {
 
   async create(user: CreateUser): Promise<User> {
     await this.checkIfUserExistsByEmail(user.email);
-    const accessProfiles = await this.accessProfileRepository.findByIds(
-      user.accessProfilesIds
-    );
 
     const newUser = User.instance;
     newUser.name = user.name;
@@ -29,7 +24,6 @@ export class UserUseCase {
     newUser.password = user.password;
     newUser.avatar = user.avatar;
     newUser.phoneNumber = user.phoneNumber;
-    newUser.accessProfiles = accessProfiles;
     newUser.status = UserStatusEnum.PENDING;
     // const newUser = new User(
     //   user.name,
@@ -46,15 +40,11 @@ export class UserUseCase {
   async update(id: number, updateUser: UpdateUser): Promise<User> {
     const user = await this.checkIfUserExists(id);
     await this.checkIfUserExistsByEmail(updateUser.email, id);
-    const accessProfiles = await this.accessProfileRepository.findByIds(
-      updateUser.accessProfilesIds
-    );
 
     user.name = updateUser.name;
     user.email = updateUser.email;
     user.avatar = updateUser.avatar;
     user.phoneNumber = updateUser.phoneNumber;
-    user.accessProfiles = accessProfiles;
     user.updatedAt = new Date();
 
     return await this.userRepository.update(user);
