@@ -24,9 +24,7 @@ export const jwtSessionTokenService = new JwtSessionTokenService(
 );
 
 // Use-Cases
-const userUserCaseS = UserUserCaseFactory.instance.getUserUseCase();
-userUserCaseS.userRepository = userRepository;
-export const userUserCase = userUserCaseS;
+export const userUserCase = UserUserCaseFactory.instance.create(userRepository);
 
 export const authUseCase = new AuthenticationUseCase(
   userRepository,
@@ -34,9 +32,7 @@ export const authUseCase = new AuthenticationUseCase(
 );
 
 // Controllers
-const usercontrollerS = UserControllerFactory.instance.getUserController();
-usercontrollerS.userUseCase = userUserCase;
-export const userController = usercontrollerS;
+export const userController = UserControllerFactory.instance.create(userUserCase);
 
 export const authController = new AuthController(authUseCase);
 

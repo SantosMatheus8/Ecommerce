@@ -1,5 +1,3 @@
-import crypto from "crypto";
-
 export enum UserStatusEnum {
   PENDING = "PENDING",
   ACTIVE = "ACTIVE",
@@ -28,14 +26,5 @@ export class User {
     }
 
     return User._instance;
-  }
-
-  private hashPassword(password: string): string {
-    if (password) {
-      const salt = crypto.randomBytes(16).toString("hex");
-      return crypto
-        .pbkdf2Sync(password, salt, 1000, 10, "sha512")
-        .toString("hex");
-    }
   }
 }

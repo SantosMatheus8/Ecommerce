@@ -1,6 +1,8 @@
-import { User } from "../domain/models/user";
+import { User, UserStatusEnum } from "../domain/models/user";
+import { UserRepository } from "../domain/ports/userRepository";
 import { UserController } from "../infra/controllers/userController";
 import { UserUseCase } from "../use-cases/userUseCase";
+import crypto from "crypto";
 
 export class UserFactory {
   private static _instance: UserFactory | null = null;
@@ -13,8 +15,31 @@ export class UserFactory {
     return UserFactory._instance;
   }
 
-  getUser(): User {
-    return User.instance;
+  create(
+    name: string,
+    email: string,
+    password: string,
+    avatar?: string,
+    phoneNumber?: string
+  ): User {
+    const newUser = User.instance;
+    newUser.name = name;
+    newUser.email = email;
+    newUser.password = this.hashPassword(password);
+    newUser.avatar = avatar;
+    newUser.phoneNumber = phoneNumber;
+    newUser.status = UserStatusEnum.PENDING;
+
+    return newUser;
+  }
+
+  private hashPassword(password: string): string {
+    if (password) {
+      const salt = crypto.randomBytes(16).toString("hex");
+      return crypto
+        .pbkdf2Sync(password, salt, 1000, 10, "sha512")
+        .toString("hex");
+    }
   }
 }
 
@@ -29,8 +54,11 @@ export class UserUserCaseFactory {
     return UserUserCaseFactory._instance;
   }
 
-  getUserUseCase(): UserUseCase {
-    return UserUseCase.instance;
+  create(userRepository: UserRepository): UserUseCase {
+    const userUserCase = UserUseCase.instance;
+    userUserCase.userRepository = userRepository;
+
+    return userUserCase;
   }
 }
 
@@ -45,7 +73,10 @@ export class UserControllerFactory {
     return UserControllerFactory._instance;
   }
 
-  getUserController(): UserController {
-    return UserController.instance;
+  create(userUserCase: UserUseCase): UserController {
+    const userController = UserController.instance;
+    userController.userUseCase = userUserCase;
+
+    return userController;
   }
 }

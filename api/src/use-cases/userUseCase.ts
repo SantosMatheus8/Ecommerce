@@ -19,13 +19,13 @@ export class UserUseCase {
   async create(user: CreateUser): Promise<User> {
     await this.checkIfUserExistsByEmail(user.email);
 
-    const newUser = UserFactory.instance.getUser();
-    newUser.name = user.name;
-    newUser.email = user.email;
-    newUser.password = user.password;
-    newUser.avatar = user.avatar;
-    newUser.phoneNumber = user.phoneNumber;
-    newUser.status = UserStatusEnum.PENDING;
+    const newUser = UserFactory.instance.create(
+      user.name,
+      user.email,
+      user.password,
+      user.avatar,
+      user.phoneNumber
+    );
 
     return await this.userRepository.insert(newUser);
   }
