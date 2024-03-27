@@ -3,6 +3,7 @@ import { User, UserStatusEnum } from "../domain/models/user";
 import { UserRepository } from "../domain/ports/userRepository";
 import { Page, PaginatedFindConditions } from "../domain/dtos/generic";
 import { NotFoundError, UnprocessableEntityError } from "../domain/dtos/errors";
+import { UserFactory } from "../factories/userFactory";
 
 export class UserUseCase {
   private static _instance: UserUseCase | null = null;
@@ -18,21 +19,13 @@ export class UserUseCase {
   async create(user: CreateUser): Promise<User> {
     await this.checkIfUserExistsByEmail(user.email);
 
-    const newUser = User.instance;
+    const newUser = UserFactory.instance.getUser();
     newUser.name = user.name;
     newUser.email = user.email;
     newUser.password = user.password;
     newUser.avatar = user.avatar;
     newUser.phoneNumber = user.phoneNumber;
     newUser.status = UserStatusEnum.PENDING;
-    // const newUser = new User(
-    //   user.name,
-    //   user.email,
-    //   user.password,
-    //   user.avatar,
-    //   user.phoneNumber,
-    //   accessProfiles
-    // );
 
     return await this.userRepository.insert(newUser);
   }

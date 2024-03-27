@@ -1,16 +1,15 @@
 import { User } from "./domain/models/user";
 
 import { AuthController } from "./infra/controllers/authController";
-import { UserController } from "./infra/controllers/userController";
 import { appDataSource } from "./infra/typeorm/dataSource";
 import { TypeORMUserRepository } from "./infra/typeorm/repositories/typeORMUserRepository";
 
 import { AuthenticationUseCase } from "./use-cases/authenticationUseCase";
-import { UserUseCase } from "./use-cases/userUseCase";
 import { UserRepository } from "./domain/ports/userRepository";
 
 import "dotenv/config";
 import { JwtSessionTokenService } from "./infra/jwt/jwtSessionTokenService";
+import { UserControllerFactory, UserUserCaseFactory } from "./factories/userFactory";
 
 // TypeORM Repositories
 export const typeOrmUserRepository = appDataSource.getRepository(User);
@@ -25,7 +24,7 @@ export const jwtSessionTokenService = new JwtSessionTokenService(
 );
 
 // Use-Cases
-const userUserCaseS = UserUseCase.instance;
+const userUserCaseS = UserUserCaseFactory.instance.getUserUseCase();
 userUserCaseS.userRepository = userRepository;
 export const userUserCase = userUserCaseS;
 
@@ -35,7 +34,7 @@ export const authUseCase = new AuthenticationUseCase(
 );
 
 // Controllers
-const usercontrollerS = UserController.instance;
+const usercontrollerS = UserControllerFactory.instance.getUserController();
 usercontrollerS.userUseCase = userUserCase;
 export const userController = usercontrollerS;
 
