@@ -149,7 +149,7 @@ export class UserUseCase {
   }
 
   private async checkIfUserExists(id: number): Promise<User> {
-    const userExists = await this.userRepository.findOne(id);
+    const userExists = await this.userRepository.findOneBy({ id });
 
     if (!userExists) {
       throw new NotFoundError("Usuário não encontrado");

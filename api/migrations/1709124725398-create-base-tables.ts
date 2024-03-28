@@ -73,7 +73,7 @@ export class createBaseTables1709124725398 implements MigrationInterface {
 
     await queryRunner.createTable(
       new Table({
-        name: 'access_profiles',
+        name: 'products',
         columns: [
           {
             name: 'id',
@@ -89,100 +89,13 @@ export class createBaseTables1709124725398 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'admin',
-            type: 'boolean',
-            isNullable: false,
-          },
-          {
-            name: 'created_at',
-            isNullable: false,
-            type: 'timestamp',
-            default: 'now()',
-          },
-          {
-            name: 'updated_at',
-            isNullable: false,
-            type: 'timestamp',
-            default: 'now()',
-          },
-        ],
-      }),
-      true,
-    );
-
-    await queryRunner.createTable(
-      new Table({
-        name: 'user_access_profiles',
-        columns: [
-          {
-            name: 'id',
-            type: 'int',
-            isPrimary: true,
-            isGenerated: true,
-            generationStrategy: 'increment',
-          },
-          {
-            name: 'user_id',
-            type: 'int',
-            isNullable: false,
-          },
-          {
-            name: 'access_profile_id',
-            type: 'int',
-            isNullable: false,
-          },
-        ],
-        foreignKeys: [
-          {
-            name: 'FK_user_access_profiles_user',
-            columnNames: ['user_id'],
-            referencedColumnNames: ['id'],
-            referencedTableName: 'users',
-            onDelete: 'CASCADE',
-          },
-          {
-            name: 'FK_user_access_profiles_access_profile',
-            columnNames: ['access_profile_id'],
-            referencedColumnNames: ['id'],
-            referencedTableName: 'access_profiles',
-            onDelete: 'CASCADE',
-          },
-        ],
-        uniques: [
-          {
-            name: 'UQ_user_access_profiles',
-            columnNames: ['user_id', 'access_profile_id'],
-          },
-        ],
-      }),
-      true,
-    );
-
-    await queryRunner.createTable(
-      new Table({
-        name: 'features',
-        columns: [
-          {
-            name: 'id',
-            type: 'int',
-            isPrimary: true,
-            isNullable: false,
-            isGenerated: true,
-            generationStrategy: 'increment',
-          },
-          {
             name: 'description',
             type: 'varchar',
             isNullable: false,
           },
           {
-            name: 'active',
-            type: 'boolean',
-            isNullable: false,
-          },
-          {
-            name: 'is_admin',
-            type: 'boolean',
+            name: 'price',
+            type: 'int',
             isNullable: false,
           },
           {
@@ -196,134 +109,6 @@ export class createBaseTables1709124725398 implements MigrationInterface {
             isNullable: false,
             type: 'timestamp',
             default: 'now()',
-          },
-        ],
-      }),
-      true,
-    );
-
-    await queryRunner.createTable(
-      new Table({
-        name: 'access_profiles_features',
-        columns: [
-          {
-            name: 'id',
-            type: 'int',
-            isPrimary: true,
-            isGenerated: true,
-            generationStrategy: 'increment',
-          },
-          {
-            name: 'feature_id',
-            type: 'int',
-            isNullable: false,
-          },
-          {
-            name: 'access_profile_id',
-            type: 'int',
-            isNullable: false,
-          },
-        ],
-        foreignKeys: [
-          {
-            name: 'FK_feature_access_profiles_feature',
-            columnNames: ['feature_id'],
-            referencedColumnNames: ['id'],
-            referencedTableName: 'features',
-            onDelete: 'CASCADE',
-          },
-          {
-            name: 'FK_feature_access_profiles_access_profile',
-            columnNames: ['access_profile_id'],
-            referencedColumnNames: ['id'],
-            referencedTableName: 'access_profiles',
-            onDelete: 'CASCADE',
-          },
-        ],
-        uniques: [
-          {
-            name: 'UQ_feature_access_profiles',
-            columnNames: ['feature_id', 'access_profile_id'],
-          },
-        ],
-      }),
-      true,
-    );
-
-    await queryRunner.createTable(
-      new Table({
-        name: 'routes',
-        columns: [
-          {
-            name: 'id',
-            type: 'int',
-            isPrimary: true,
-            isNullable: false,
-            isGenerated: true,
-            generationStrategy: 'increment',
-          },
-          {
-            name: 'uri',
-            type: 'varchar',
-            isNullable: false,
-          },
-          {
-            name: 'verb',
-            type: 'varchar',
-            isNullable: false,
-          },
-          {
-            name: 'is_public',
-            type: 'boolean',
-            isNullable: false,
-          },
-        ],
-      }),
-      true,
-    );
-
-    await queryRunner.createTable(
-      new Table({
-        name: 'routes_features',
-        columns: [
-          {
-            name: 'id',
-            type: 'int',
-            isPrimary: true,
-            isGenerated: true,
-            generationStrategy: 'increment',
-          },
-          {
-            name: 'feature_id',
-            type: 'int',
-            isNullable: false,
-          },
-          {
-            name: 'route_id',
-            type: 'int',
-            isNullable: false,
-          },
-        ],
-        foreignKeys: [
-          {
-            name: 'FK_feature_routes_feature',
-            columnNames: ['feature_id'],
-            referencedColumnNames: ['id'],
-            referencedTableName: 'features',
-            onDelete: 'CASCADE',
-          },
-          {
-            name: 'FK_feature_routes_route',
-            columnNames: ['route_id'],
-            referencedColumnNames: ['id'],
-            referencedTableName: 'routes',
-            onDelete: 'CASCADE',
-          },
-        ],
-        uniques: [
-          {
-            name: 'UQ_feature_routes',
-            columnNames: ['feature_id', 'route_id'],
           },
         ],
       }),
