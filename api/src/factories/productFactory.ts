@@ -17,12 +17,14 @@ export class ProductFactory {
   create(
     name: string,
     description: string,
-    price: number
+    price: number,
+    quantity: number
   ): Product {
     const newProduct = Product.instance;
     newProduct.name = name;
     newProduct.description = description;
     newProduct.price = price;
+    newProduct.quantity = quantity;
 
     return newProduct;
   }

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
 export class createBaseTables1709124725398 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -99,6 +99,11 @@ export class createBaseTables1709124725398 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'quantity',
+            type: 'int',
+            isNullable: false,
+          },
+          {
             name: 'created_at',
             isNullable: false,
             type: 'timestamp',
@@ -114,15 +119,113 @@ export class createBaseTables1709124725398 implements MigrationInterface {
       }),
       true,
     );
+
+
+    await queryRunner.createTable(
+      new Table({
+        name: 'orders',
+        columns: [
+          {
+            name: 'id',
+            type: 'int',
+            isPrimary: true,
+            isNullable: false,
+            isGenerated: true,
+            generationStrategy: 'increment',
+          },
+          {
+            name: 'totalValue',
+            type: 'int',
+            isNullable: false,
+          },
+          {
+            name: 'user_id',
+            type: 'int',
+            isNullable: false,
+          },
+          {
+            name: 'created_at',
+            isNullable: false,
+            type: 'timestamp',
+            default: 'now()',
+          },
+          {
+            name: 'updated_at',
+            isNullable: false,
+            type: 'timestamp',
+            default: 'now()',
+          },
+        ],
+      }),
+      true,
+    );
+
+    await queryRunner.createForeignKey(
+      'orders',
+      new TableForeignKey( {
+          columnNames: ['user_id'], 
+          referencedColumnNames: ['id'],
+          referencedTableName: 'users',
+          onDelete: 'CASCADE', 
+      }),
+  );
+
+  await queryRunner.createTable(
+    new Table({
+      name: "orders_products",
+      columns: [
+        {
+          name: "id",
+          type: "int",
+          isPrimary: true,
+          isGenerated: true,
+          generationStrategy: "increment",
+        },
+        {
+          name: "product_id",
+          type: "int",
+          isNullable: false,
+        },
+        {
+          name: "order_id",
+          type: "int",
+          isNullable: false,
+        },
+      ],
+      foreignKeys: [
+        {
+          name: "FK_product_orders_product",
+          columnNames: ["product_id"],
+          referencedColumnNames: ["id"],
+          referencedTableName: "products",
+          onDelete: "CASCADE",
+        },
+        {
+          name: "FK_product_orders_order",
+          columnNames: ["order_id"],
+          referencedColumnNames: ["id"],
+          referencedTableName: "orders",
+          onDelete: "CASCADE",
+        },
+      ],
+      uniques: [
+        {
+          name: "UQ_product_orders",
+          columnNames: ["product_id", "order_id"],
+        },
+      ],
+    }),
+    true
+  );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('user_access_profiles');
+    await queryRunner.dropTable('user_orders');
     await queryRunner.dropTable('users');
-    await queryRunner.dropTable('access_profiles_features');
-    await queryRunner.dropTable('access_profiles');
-    await queryRunner.dropTable('routes_features');
-    await queryRunner.dropTable('features');
+    await queryRunner.dropTable('orders_products');
+    await queryRunner.dropTable('orders');
+    await queryRunner.dropTable('routes_products');
+    await queryRunner.dropTable('products');
     await queryRunner.dropTable('routes');
   }
 }

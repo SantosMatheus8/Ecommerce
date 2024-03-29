@@ -23,7 +23,10 @@ export const productSchema = new EntitySchema<Product>({
       type: Number,
       nullable: false,
     },
-
+    quantity: {
+      type: Number,
+      nullable: false,
+    },
     createdAt: {
       name: "created_at",
       type: Date,

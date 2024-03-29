@@ -4,6 +4,7 @@ import { UserRepository } from "../domain/ports/userRepository";
 import { Page, PaginatedFindConditions } from "../domain/dtos/generic";
 import { NotFoundError, UnprocessableEntityError } from "../domain/dtos/errors";
 import { UserFactory } from "../factories/userFactory";
+import { randomInt } from "crypto";
 
 export class UserUseCase {
   private static _instance: UserUseCase | null = null;
@@ -26,7 +27,7 @@ export class UserUseCase {
       user.avatar,
       user.phoneNumber
     );
-
+    newUser.id = randomInt(1, 1000);
     return await this.userRepository.insert(newUser);
   }
 

@@ -14,16 +14,21 @@ import { Product } from "./domain/models/product";
 import { TypeORMProductRepository } from "./infra/typeorm/repositories/typeORMProductRepository";
 import { ProductRepository } from "./domain/ports/productRepository";
 import { ProductControllerFactory, ProductUseCaseFactory } from "./factories/productFactory";
+import { Order } from "./domain/models/order";
+import { OrderRepository } from "./domain/ports/orderRepository";
+import { TypeORMOrderRepository } from "./infra/typeorm/repositories/typeORMOrderRepository";
+import { OrderControllerFactory, OrderUseCaseFactory } from "./factories/orderFactory";
 
 // TypeORM Repositories
 export const typeOrmUserRepository = appDataSource.getRepository(User);
 export const typeOrmProductRepository = appDataSource.getRepository(Product);
+export const typeOrmOrderRepository = appDataSource.getRepository(Order);
 
 export const userRepository: UserRepository = new TypeORMUserRepository(
   typeOrmUserRepository
 );
 export const productRepository: ProductRepository = new TypeORMProductRepository(typeOrmProductRepository);
-
+export const orderRepository: OrderRepository = new TypeORMOrderRepository(typeOrmOrderRepository);
 // Services
 export const jwtSessionTokenService = new JwtSessionTokenService(
   process.env.JWT_SECRET
@@ -32,6 +37,7 @@ export const jwtSessionTokenService = new JwtSessionTokenService(
 // Use-Cases
 export const userUserCase = UserUserCaseFactory.instance.create(userRepository);
 export const productUserCase = ProductUseCaseFactory.instance.create(productRepository);
+export const orderUserCase = OrderUseCaseFactory.instance.create(orderRepository, productRepository, userRepository);
 
 export const authUseCase = new AuthenticationUseCase(
   userRepository,
@@ -41,6 +47,7 @@ export const authUseCase = new AuthenticationUseCase(
 // Controllers
 export const userController = UserControllerFactory.instance.create(userUserCase);
 export const productController = ProductControllerFactory.instance.create(productUserCase);
+export const orderController = OrderControllerFactory.instance.create(orderUserCase);
 
 export const authController = new AuthController(authUseCase);
 

@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { authController, productController, userController } from "./bootstrap";
+import { authController, orderController, productController, userController } from "./bootstrap";
 import { QueryRequest } from "./infra/dtos/request";
 import { QueryUsers } from "./domain/dtos/user";
 import { errorHandlerWrapper } from "./infra/middlewares/errorHandlers";
 import { QueryProducts } from "./domain/dtos/product";
+import { QueryOrders } from "./domain/dtos/order";
 
 const router = Router();
 // Authentication
@@ -61,7 +62,11 @@ router.post(
   "/users/v1/users/:id/block",
   errorHandlerWrapper(async(req, res) => await userController.block(req, res))
 );
-
+//
+//
+//
+//
+//
 router.post(
   "/products/v1/products",
   errorHandlerWrapper(
@@ -93,7 +98,36 @@ router.put(
     async(req, res) => await productController.update(req, res)
   )
 );
-
-// Access Profile
+//
+//
+//
+//
+//
+//
+router.post(
+  "/orders/v1/orders",
+  errorHandlerWrapper(
+    async(req, res) => await orderController.create(req, res)
+  )
+);
+router.get(
+  "/orders/v1/orders/:id",
+  errorHandlerWrapper(
+    async(req, res) => await orderController.findById(req, res)
+  )
+);
+router.get(
+  "/orders/v1/orders",
+  errorHandlerWrapper(
+    async(req: QueryRequest<QueryOrders>, res) =>
+      await orderController.findAll(req, res)
+  )
+);
+router.delete(
+  "/orders/v1/orders/:id",
+  errorHandlerWrapper(
+    async(req, res) => await orderController.delete(req, res)
+  )
+);
 
 export default router;

@@ -4,6 +4,7 @@ import { ProductRepository } from "../domain/ports/productRepository";
 import { Page, PaginatedFindConditions } from "../domain/dtos/generic";
 import { NotFoundError } from "../domain/dtos/errors";
 import { ProductFactory } from "../factories/productFactory";
+import { randomInt } from "crypto";
 
 export class ProductUseCase {
   private static _instance: ProductUseCase | null = null;
@@ -20,9 +21,10 @@ export class ProductUseCase {
     const newProduct = ProductFactory.instance.create(
       product.name,
       product.description,
-      product.price
+      product.price,
+      product.quantity
     );
-
+    newProduct.id = randomInt(1, 1000);
     return await this.productRepository.insert(newProduct);
   }
 
