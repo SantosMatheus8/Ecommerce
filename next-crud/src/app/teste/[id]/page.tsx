@@ -1,12 +1,14 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { getProduct } from '@/services/contactService'
+import { getProduct } from '@/services/ecommerceService'
 import Link from 'next/link'
+import { useCartStore } from '@/store/cart'
 
 export default function Teste() {
   const params = useParams()
   const [product, setProduct] = useState<any>([])
+  const {addItem} = useCartStore() as { addItem: (product: any) => void }
 
   const loadProducts = async () => {
     const response = await getProduct(params.id as string)
@@ -17,11 +19,10 @@ export default function Teste() {
   useEffect(() => {
     loadProducts()
   }, [])
+  
 
-  console.log('/eopara', product)
   return (
-    <section className="max-w-4xl mx-auto mt-8 px-4 flex flex-col items-center justify-center">
-      <h1 className="mt-5 mb-20 text-6xl">Americanas</h1>
+    <section className="max-w-4xl mx-auto mt-20 px-4 flex flex-col items-center justify-center">
   
       <Link href={`/`}>
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4">
@@ -43,7 +44,7 @@ export default function Teste() {
             <p className="text-lg font-semibold text-blue-700 mb-2">
               R${product.price}
             </p>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <button onClick={()=> addItem(product)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Adicionar ao Carrinho
             </button>
           </div>

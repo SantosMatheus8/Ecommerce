@@ -27,8 +27,8 @@ export class OrderUseCase {
     if (!user) {
       throw new NotFoundError("Usuário não encontrado");
     }
-
-    const products = await this.productRepository.findByIds(order.productsIds);
+    console.log("dasdklasdkl;adkls;asd", order);
+    const products = await this.productRepository.findByIds(order.products.map(product => product.id));
 
     if (products.length === 0) {
       throw new UnprocessableEntityError("Nenhum produto encontrado");
@@ -36,12 +36,12 @@ export class OrderUseCase {
     const updatedProducts = products.map(product => { product.quantity = product.quantity - 1; return product; });
     await this.productRepository.insertMany(updatedProducts);
 
-    const prices = products.map(product => product.price);
-    const totalPrice = prices.reduce((total, price) => total + price, 0);
+    const totalPrices = order.products.map(product => product.price * product.quantity);
+    const totalPrice = totalPrices.reduce((acc, curr) => acc + curr, 0);
 
     const newOrder = OrderFactory.instance.create(
       user,
-      products,
+      order.products.flatMap(product => Array.from({ length: product.quantity }, () => product)),
       totalPrice
     );
 

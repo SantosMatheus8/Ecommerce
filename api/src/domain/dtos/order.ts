@@ -1,6 +1,8 @@
+import { Product } from "../models/product";
+
 export type CreateOrder = {
   userId: string
-  productsIds: number[]
+  products: Product[]
 };
 
 export enum OrdersOrderByEnum {

@@ -4,7 +4,7 @@ import { Product } from "../../../domain/models/product";
 import { In } from "typeorm";
 
 export class TypeORMProductRepository extends TypeORMRepository<Product> implements ProductRepository {
-  async findByIds(ids: number[]): Promise<Product[]> {
+  async findByIds(ids: string[]): Promise<Product[]> {
     return await this.repository.findBy({ id: In(ids) });
   }
 }

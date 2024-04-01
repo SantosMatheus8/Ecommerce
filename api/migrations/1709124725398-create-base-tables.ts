@@ -202,12 +202,12 @@ export class createBaseTables1709124725398 implements MigrationInterface {
           onDelete: "CASCADE",
         },
       ],
-      uniques: [
-        {
-          name: "UQ_product_orders",
-          columnNames: ["product_id", "order_id"],
-        },
-      ],
+      // uniques: [
+      //   {
+      //     name: "UQ_product_orders",
+      //     columnNames: ["product_id", "order_id"],
+      //   },
+      // ],
     }),
     true
   );

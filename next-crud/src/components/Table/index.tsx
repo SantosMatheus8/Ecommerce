@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { IconClose } from "../Icons/IconClose";
 import ContactModal from "../Modal";
-import { getContacts, updateContact } from "@/services/contactService";
+import { getContacts, updateContact } from "@/services/ecommerceService";
 
 
 export type TableProps = {

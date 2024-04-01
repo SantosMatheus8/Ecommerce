@@ -1,5 +1,5 @@
 'use client'
-import { getProducts } from '@/services/contactService'
+import { getProducts } from '@/services/ecommerceService'
 import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 
@@ -18,8 +18,7 @@ export default function PrincipalPage() {
   }, [])
 
   return (
-    <section className="mx-auto max-w-[85%] flex flex-col items-center justify-center">
-      <h1 className="mt-5 mb-20 text-6xl">Americanas</h1>
+    <section className="mx-auto max-w-[85%] flex flex-col items-center justify-center mt-20">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-16">
         {products?.rows?.map((product: any) => {
           console.log(product)
