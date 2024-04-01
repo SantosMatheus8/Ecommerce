@@ -8,7 +8,7 @@ export enum UserStatusEnum {
 export class User {
   private static _instance: User | null = null;
 
-  id?: number;
+  id?: string;
   name: string;
   email: string;
   password: string;

@@ -15,7 +15,7 @@ export type CreateUser = {
 };
 
 export type UserResponse = {
-  id: number
+  id: string
   name: string
   email: string
   avatar?: string

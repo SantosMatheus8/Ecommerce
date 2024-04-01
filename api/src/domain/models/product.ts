@@ -1,7 +1,7 @@
 export class Product {
   private static _instance: Product | null = null;
 
-  id?: number;
+  id?: string;
   name: string;
   description: string;
   price: number;

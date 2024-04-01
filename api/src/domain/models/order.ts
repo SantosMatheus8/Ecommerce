@@ -4,7 +4,7 @@ import { User } from "./user";
 export class Order {
   private static _instance: Order | null = null;
 
-  id?: number;
+  id?: string;
   user: User;
   products: Product[];
   totalValue: number;

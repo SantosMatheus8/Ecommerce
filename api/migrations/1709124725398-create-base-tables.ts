@@ -8,11 +8,9 @@ export class createBaseTables1709124725398 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'int',
+            type: 'uuid',
             isPrimary: true,
             isNullable: false,
-            isGenerated: true,
-            generationStrategy: 'increment',
           },
           {
             name: 'name',
@@ -77,11 +75,9 @@ export class createBaseTables1709124725398 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'int',
+            type: 'uuid',
             isPrimary: true,
             isNullable: false,
-            isGenerated: true,
-            generationStrategy: 'increment',
           },
           {
             name: 'name',
@@ -127,11 +123,9 @@ export class createBaseTables1709124725398 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'int',
+            type: 'uuid',
             isPrimary: true,
             isNullable: false,
-            isGenerated: true,
-            generationStrategy: 'increment',
           },
           {
             name: 'totalValue',
@@ -140,7 +134,7 @@ export class createBaseTables1709124725398 implements MigrationInterface {
           },
           {
             name: 'user_id',
-            type: 'int',
+            type: 'uuid',
             isNullable: false,
           },
           {
@@ -175,20 +169,20 @@ export class createBaseTables1709124725398 implements MigrationInterface {
       name: "orders_products",
       columns: [
         {
-          name: "id",
-          type: "int",
+          name: 'id',
+          type: 'int',
           isPrimary: true,
+          isNullable: false,
           isGenerated: true,
-          generationStrategy: "increment",
         },
         {
           name: "product_id",
-          type: "int",
+          type: "uuid",
           isNullable: false,
         },
         {
           name: "order_id",
-          type: "int",
+          type: "uuid",
           isNullable: false,
         },
       ],

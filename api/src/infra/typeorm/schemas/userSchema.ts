@@ -7,9 +7,8 @@ export const userSchema = new EntitySchema<User>({
   tableName: "users",
   columns: {
     id: {
-      type: Number,
+      type: String,
       primary: true,
-      generated: true,
     },
     name: {
       type: String,

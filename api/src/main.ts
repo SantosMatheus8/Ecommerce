@@ -5,6 +5,7 @@ import { boostrap, shutdown } from "./bootstrap";
 import fs from "fs";
 import yaml from "js-yaml";
 import { registerErrorHandlers } from "./infra/middlewares/errorHandlers";
+import cors from "cors";
 
 async function main(): Promise<void> {
   await new Promise<void>((resolve, reject) => {
@@ -13,7 +14,9 @@ async function main(): Promise<void> {
       app.use(express.json());
       const swaggerFile = fs.readFileSync("./src/docs/swagger.yml", "utf8");
       app.use("/api-docs", serve, setup(yaml.load(swaggerFile)));
+      app.use(cors());
       app.use(router);
+
       registerErrorHandlers(app);
       app.use((error, req, res, next) => {
         if (error) {

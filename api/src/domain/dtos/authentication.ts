@@ -34,7 +34,7 @@ export type AzureAuthResponseDto = {
 };
 
 export type AccessPayload = {
-  sub: number
+  sub: string
   email: string
   name: string
   avatar: string
@@ -42,9 +42,5 @@ export type AccessPayload = {
 };
 
 export type RefreshPayload = {
-  sub: number
-};
-
-export type ForgotPasswordPayload = {
-  sub: number
+  sub: string
 };

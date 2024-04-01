@@ -9,9 +9,8 @@ export const orderSchema = new EntitySchema<Order & { user: User, products: Prod
   tableName: "orders",
   columns: {
     id: {
-      type: Number,
+      type: String,
       primary: true,
-      generated: true,
     },
     totalValue: {
       type: Number,

@@ -1,5 +1,5 @@
 export type CreateOrder = {
-  userId: number
+  userId: string
   productsIds: number[]
 };
 

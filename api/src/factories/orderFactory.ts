@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import { Order } from "../domain/models/order";
 import { Product } from "../domain/models/product";
 import { User } from "../domain/models/user";
@@ -27,6 +28,7 @@ export class OrderFactory {
     newOrder.user = user;
     newOrder.products = products;
     newOrder.totalValue = totalValue;
+    newOrder.id = randomUUID();
 
     return newOrder;
   }

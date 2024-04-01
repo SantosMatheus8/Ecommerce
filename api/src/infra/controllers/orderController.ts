@@ -32,7 +32,7 @@ export class OrderController {
   public async findById(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
 
-    const order = await this.orderUseCase.findById(Number(id));
+    const order = await this.orderUseCase.findById((id));
 
     res.status(200).send(order);
   }
@@ -61,7 +61,7 @@ export class OrderController {
   public async delete(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
 
-    await this.orderUseCase.delete(Number(id));
+    await this.orderUseCase.delete((id));
 
     res.status(204).send();
   }

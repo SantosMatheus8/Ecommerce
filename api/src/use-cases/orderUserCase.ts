@@ -45,11 +45,10 @@ export class OrderUseCase {
       totalPrice
     );
 
-    console.log("dl;dkasldklakasdkla", newOrder);
     return await this.orderRepository.insert(newOrder);
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     const order = await this.checkIfOrderExists(id);
 
     return await this.orderRepository.delete(order);
@@ -59,13 +58,13 @@ export class OrderUseCase {
     return await this.orderRepository.paginatedFindBy(query);
   }
 
-  async findById(id: number): Promise<Order> {
+  async findById(id: string): Promise<Order> {
     const order = await this.checkIfOrderExists(id);
 
     return order;
   }
 
-  private async checkIfOrderExists(id: number): Promise<Order> {
+  private async checkIfOrderExists(id: string): Promise<Order> {
     const orderExists = await this.orderRepository.findOneBy({ id });
 
     if (!orderExists) {

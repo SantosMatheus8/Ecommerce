@@ -1,5 +1,7 @@
+import { UUID } from "crypto";
+
 export interface PayloadType {
-  sub: number
+  sub: UUID
   email: string
   name: string
   avatar: string
@@ -7,5 +9,5 @@ export interface PayloadType {
 }
 
 export interface SessionsPayloadType {
-  sub: number
+  sub: UUID
 }

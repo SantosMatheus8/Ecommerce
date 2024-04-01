@@ -2,7 +2,7 @@ import { User, UserStatusEnum } from "../domain/models/user";
 import { UserRepository } from "../domain/ports/userRepository";
 import { UserController } from "../infra/controllers/userController";
 import { UserUseCase } from "../use-cases/userUseCase";
-import crypto from "crypto";
+import crypto, { randomUUID } from "crypto";
 
 export class UserFactory {
   private static _instance: UserFactory | null = null;
@@ -29,6 +29,7 @@ export class UserFactory {
     newUser.avatar = avatar;
     newUser.phoneNumber = phoneNumber;
     newUser.status = UserStatusEnum.PENDING;
+    newUser.id = randomUUID();
 
     return newUser;
   }

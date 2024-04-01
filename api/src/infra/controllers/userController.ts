@@ -33,7 +33,7 @@ export class UserController {
   public async findById(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
 
-    const user = await this.userUseCase.findById(Number(id));
+    const user = await this.userUseCase.findById((id));
     const simplifiedUser = this.toSimpleUser(user);
 
     res.status(200).send(simplifiedUser);
@@ -73,7 +73,7 @@ export class UserController {
     const { id } = req.params;
     const updateUser = req.body;
 
-    const user = await this.userUseCase.update(+id, updateUser);
+    const user = await this.userUseCase.update(id, updateUser);
     const simplifiedUser = this.toSimpleUser(user);
 
     res.status(200).send(simplifiedUser);
@@ -82,7 +82,7 @@ export class UserController {
   public async delete(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
 
-    await this.userUseCase.delete(Number(id));
+    await this.userUseCase.delete((id));
 
     res.status(204).send();
   }
@@ -90,7 +90,7 @@ export class UserController {
   public async inactivate(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
 
-    const user = await this.userUseCase.inactivate(+id);
+    const user = await this.userUseCase.inactivate(id);
     const simplifiedUser = this.toSimpleUser(user);
 
     res.status(200).send(simplifiedUser);
@@ -99,7 +99,7 @@ export class UserController {
   public async activate(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
 
-    const user = await this.userUseCase.activate(+id);
+    const user = await this.userUseCase.activate(id);
     const simplifiedUser = this.toSimpleUser(user);
 
     res.status(200).send(simplifiedUser);
@@ -108,7 +108,7 @@ export class UserController {
   public async unblock(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
 
-    const user = await this.userUseCase.unblock(+id);
+    const user = await this.userUseCase.unblock(id);
     const simplifiedUser = this.toSimpleUser(user);
 
     res.status(200).send(simplifiedUser);
@@ -117,7 +117,7 @@ export class UserController {
   public async block(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
 
-    const user = await this.userUseCase.block(+id);
+    const user = await this.userUseCase.block(id);
     const simplifiedUser = this.toSimpleUser(user);
 
     res.status(200).send(simplifiedUser);

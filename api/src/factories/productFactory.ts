@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import { Product } from "../domain/models/product";
 import { ProductRepository } from "../domain/ports/productRepository";
 import { ProductController } from "../infra/controllers/productController";
@@ -25,6 +26,7 @@ export class ProductFactory {
     newProduct.description = description;
     newProduct.price = price;
     newProduct.quantity = quantity;
+    newProduct.id = randomUUID();
 
     return newProduct;
   }

@@ -32,7 +32,7 @@ export class ProductController {
   public async findById(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
 
-    const product = await this.productUseCase.findById(Number(id));
+    const product = await this.productUseCase.findById((id));
 
     res.status(200).send(product);
   }
@@ -71,7 +71,7 @@ export class ProductController {
     const { id } = req.params;
     const updateProduct = req.body;
 
-    const product = await this.productUseCase.update(+id, updateProduct);
+    const product = await this.productUseCase.update(id, updateProduct);
 
     res.status(200).send(product);
   }
@@ -79,7 +79,7 @@ export class ProductController {
   public async delete(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
 
-    await this.productUseCase.delete(Number(id));
+    await this.productUseCase.delete((id));
 
     res.status(204).send();
   }

@@ -7,9 +7,8 @@ export const productSchema = new EntitySchema<Product>({
   tableName: "products",
   columns: {
     id: {
-      type: Number,
+      type: String,
       primary: true,
-      generated: true,
     },
     name: {
       type: String,

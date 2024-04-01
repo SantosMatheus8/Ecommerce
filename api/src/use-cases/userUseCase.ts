@@ -4,7 +4,6 @@ import { UserRepository } from "../domain/ports/userRepository";
 import { Page, PaginatedFindConditions } from "../domain/dtos/generic";
 import { NotFoundError, UnprocessableEntityError } from "../domain/dtos/errors";
 import { UserFactory } from "../factories/userFactory";
-import { randomInt } from "crypto";
 
 export class UserUseCase {
   private static _instance: UserUseCase | null = null;
@@ -27,11 +26,11 @@ export class UserUseCase {
       user.avatar,
       user.phoneNumber
     );
-    newUser.id = randomInt(1, 1000);
+
     return await this.userRepository.insert(newUser);
   }
 
-  async update(id: number, updateUser: UpdateUser): Promise<User> {
+  async update(id: string, updateUser: UpdateUser): Promise<User> {
     const user = await this.checkIfUserExists(id);
     await this.checkIfUserExistsByEmail(updateUser.email, id);
 
@@ -44,7 +43,7 @@ export class UserUseCase {
     return await this.userRepository.update(user);
   }
 
-  async inactivate(id: number): Promise<User> {
+  async inactivate(id: string): Promise<User> {
     const user = await this.checkIfUserExists(id);
 
     switch (user.status) {
@@ -66,7 +65,7 @@ export class UserUseCase {
     return await this.userRepository.update(user);
   }
 
-  async activate(id: number): Promise<User> {
+  async activate(id: string): Promise<User> {
     const user = await this.checkIfUserExists(id);
     const userExist = await this.userRepository.findActiveByEmail(user.email);
 
@@ -80,7 +79,7 @@ export class UserUseCase {
     return await this.userRepository.update(user);
   }
 
-  async unblock(id: number): Promise<User> {
+  async unblock(id: string): Promise<User> {
     const user = await this.checkIfUserExists(id);
 
     switch (user.status) {
@@ -102,7 +101,7 @@ export class UserUseCase {
     return await this.userRepository.update(user);
   }
 
-  async block(id: number): Promise<User> {
+  async block(id: string): Promise<User> {
     const user = await this.checkIfUserExists(id);
 
     switch (user.status) {
@@ -124,7 +123,7 @@ export class UserUseCase {
     return await this.userRepository.update(user);
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     const user = await this.checkIfUserExists(id);
 
     if (
@@ -143,13 +142,13 @@ export class UserUseCase {
     return await this.userRepository.paginatedFindBy(query);
   }
 
-  async findById(id: number): Promise<User> {
+  async findById(id: string): Promise<User> {
     const user = await this.checkIfUserExists(id);
 
     return user;
   }
 
-  private async checkIfUserExists(id: number): Promise<User> {
+  private async checkIfUserExists(id: string): Promise<User> {
     const userExists = await this.userRepository.findOneBy({ id });
 
     if (!userExists) {
@@ -161,7 +160,7 @@ export class UserUseCase {
 
   private async checkIfUserExistsByEmail(
     email: string,
-    id?: number
+    id?: string
   ): Promise<void> {
     const userExist = await this.userRepository.findActiveByEmail(email);
 
