@@ -22,11 +22,11 @@ export const createContact = async ({
 }
 
 export const getProducts = async () => {
-  console.log('tentooooooou')
-  const oi = await api.get('products/v1/products').then((res) => res)
+  return await api.get('products/v1/products').then((res) => res)
+}
 
-  console.log('dalsdaksdlalkdasdkl;aksd', oi)
-  return oi
+export const getProduct = async (id:string) => {
+  return await api.get(`products/v1/products/${id}`).then((res) => res)
 }
 
 export const deleteContact = async (id: number) => {
