@@ -87,42 +87,6 @@ export class UserController {
     res.status(204).send();
   }
 
-  public async inactivate(req: Request, res: Response): Promise<void> {
-    const { id } = req.params;
-
-    const user = await this.userUseCase.inactivate(id);
-    const simplifiedUser = this.toSimpleUser(user);
-
-    res.status(200).send(simplifiedUser);
-  }
-
-  public async activate(req: Request, res: Response): Promise<void> {
-    const { id } = req.params;
-
-    const user = await this.userUseCase.activate(id);
-    const simplifiedUser = this.toSimpleUser(user);
-
-    res.status(200).send(simplifiedUser);
-  }
-
-  public async unblock(req: Request, res: Response): Promise<void> {
-    const { id } = req.params;
-
-    const user = await this.userUseCase.unblock(id);
-    const simplifiedUser = this.toSimpleUser(user);
-
-    res.status(200).send(simplifiedUser);
-  }
-
-  public async block(req: Request, res: Response): Promise<void> {
-    const { id } = req.params;
-
-    const user = await this.userUseCase.block(id);
-    const simplifiedUser = this.toSimpleUser(user);
-
-    res.status(200).send(simplifiedUser);
-  }
-
   private toSimpleUser(user: User): UserResponse {
     return {
       id: user.id,

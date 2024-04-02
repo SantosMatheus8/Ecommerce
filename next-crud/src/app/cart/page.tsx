@@ -19,9 +19,13 @@ export default function ShoppingCart() {
   }
 
   const checkout = (products: any[]) => {
-   const newProduct = products.map((product, index) => {product.quantity = quantities[index]; return product;})
+    const newProduct = products.map((product, index) => {
+      product.quantity = quantities[index]
+      return product
+    })
     clearItems()
-    createOrder({userId:'3a919bfc-ffc7-4d49-8827-1230614b335c', products: newProduct})
+    const userId: any = localStorage.getItem('userId')
+    createOrder({ userId, products: newProduct })
   }
 
   const total = items.reduce(

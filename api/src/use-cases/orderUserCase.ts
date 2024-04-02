@@ -27,7 +27,6 @@ export class OrderUseCase {
     if (!user) {
       throw new NotFoundError("Usuário não encontrado");
     }
-    console.log("dasdklasdkl;adkls;asd", order);
     const products = await this.productRepository.findByIds(order.products.map(product => product.id));
 
     if (products.length === 0) {

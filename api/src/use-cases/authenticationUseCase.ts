@@ -12,7 +12,7 @@ export class AuthenticationUseCase {
   ) {}
 
   public async login(email: string, senha: string): Promise<LoginResponseDto> {
-    const user = await this.userRepository.findActiveByEmail(email);
+    const user = await this.userRepository.findOneBy({ email });
     if (user) {
       if (compare(senha, user.password)) {
         return await this.generateTokens(user);
@@ -22,21 +22,15 @@ export class AuthenticationUseCase {
   }
 
   private async generateTokens(user: User): Promise<LoginResponseDto> {
-    const refreshToken = {
-      sub: user.id,
-    };
-
     const accessToken = {
       sub: user.id,
       email: user.email,
       name: user.name,
       avatar: user.avatar,
-      featureIds: [],
     };
 
     return await this.sessionTokenService.createSessionTokens(
-      accessToken,
-      refreshToken
+      accessToken
     );
   }
 }

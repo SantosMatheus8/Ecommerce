@@ -43,86 +43,6 @@ export class UserUseCase {
     return await this.userRepository.update(user);
   }
 
-  async inactivate(id: string): Promise<User> {
-    const user = await this.checkIfUserExists(id);
-
-    switch (user.status) {
-      case UserStatusEnum.INACTIVE:
-        throw new UnprocessableEntityError(
-          "Não é possível inativar um usuário que já está inativo"
-        );
-      case UserStatusEnum.BLOCKED:
-        throw new UnprocessableEntityError(
-          "Não é possível inativar um usuário bloqueado"
-        );
-      case UserStatusEnum.PENDING:
-        throw new UnprocessableEntityError(
-          "Não é possível inativar um usuário pendente"
-        );
-    }
-    user.status = UserStatusEnum.INACTIVE;
-
-    return await this.userRepository.update(user);
-  }
-
-  async activate(id: string): Promise<User> {
-    const user = await this.checkIfUserExists(id);
-    const userExist = await this.userRepository.findActiveByEmail(user.email);
-
-    if (userExist) {
-      throw new UnprocessableEntityError(
-        "Já existe um usuário ativo ou bloquedo com esse e-mail"
-      );
-    }
-    user.status = UserStatusEnum.ACTIVE;
-
-    return await this.userRepository.update(user);
-  }
-
-  async unblock(id: string): Promise<User> {
-    const user = await this.checkIfUserExists(id);
-
-    switch (user.status) {
-      case UserStatusEnum.ACTIVE:
-        throw new UnprocessableEntityError(
-          "Não é possível desbloquear um usuário ativo"
-        );
-      case UserStatusEnum.INACTIVE:
-        throw new UnprocessableEntityError(
-          "Não é possível desbloquear um usuário inativo"
-        );
-      case UserStatusEnum.PENDING:
-        throw new UnprocessableEntityError(
-          "Não é possível desbloquear um usuário pendente"
-        );
-    }
-    user.status = UserStatusEnum.ACTIVE;
-
-    return await this.userRepository.update(user);
-  }
-
-  async block(id: string): Promise<User> {
-    const user = await this.checkIfUserExists(id);
-
-    switch (user.status) {
-      case UserStatusEnum.BLOCKED:
-        throw new UnprocessableEntityError(
-          "Não é possível bloqquear um usuário que já está bloqueado"
-        );
-      case UserStatusEnum.INACTIVE:
-        throw new UnprocessableEntityError(
-          "Não é possível bloquear um usuário inativo"
-        );
-      case UserStatusEnum.PENDING:
-        throw new UnprocessableEntityError(
-          "Não é possível bloquear um usuário pendente"
-        );
-    }
-    user.status = UserStatusEnum.BLOCKED;
-
-    return await this.userRepository.update(user);
-  }
-
   async delete(id: string): Promise<void> {
     const user = await this.checkIfUserExists(id);
 
@@ -162,7 +82,7 @@ export class UserUseCase {
     email: string,
     id?: string
   ): Promise<void> {
-    const userExist = await this.userRepository.findActiveByEmail(email);
+    const userExist = await this.userRepository.findOneBy({ email });
 
     if (userExist && userExist.id !== id) {
       throw new UnprocessableEntityError("E-mail já cadastrado");

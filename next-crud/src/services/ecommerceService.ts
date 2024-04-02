@@ -13,6 +13,11 @@ products
   return api.post('orders/v1/orders', body).then((res) => res)
 }
 
+export const login = async (email:string, password:string) => {
+    const body = { email, password }
+    return api.post('auth/v1/login', body).then((res) => res)
+  }
+
 export const getProducts = async () => {
   return await api.get('products/v1/products').then((res) => res)
 }

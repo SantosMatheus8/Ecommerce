@@ -15,10 +15,10 @@ export class AuthController {
     const email = req.body.email;
     const password = req.body.password;
 
-    const { accessToken, refreshToken } = await this.authUseCase.login(email, password);
+    const { accessToken } = await this.authUseCase.login(email, password);
 
-    res.cookie("refresh_token", refreshToken, { httpOnly: true });
+    res.cookie("refresh_token", { httpOnly: true });
 
-    res.status(200).json({ accessToken, refreshToken });
+    res.status(200).json({ accessToken });
   }
 }

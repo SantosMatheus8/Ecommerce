@@ -1,8 +1,9 @@
 import { User, UserStatusEnum } from "../domain/models/user";
 import { UserRepository } from "../domain/ports/userRepository";
 import { UserController } from "../infra/controllers/userController";
+import { hash } from "../infra/encryption/encryption";
 import { UserUseCase } from "../use-cases/userUseCase";
-import crypto, { randomUUID } from "crypto";
+import { randomUUID } from "crypto";
 
 export class UserFactory {
   private static _instance: UserFactory | null = null;
@@ -25,22 +26,13 @@ export class UserFactory {
     const newUser = User.instance;
     newUser.name = name;
     newUser.email = email;
-    newUser.password = this.hashPassword(password);
+    newUser.password = hash(password);
     newUser.avatar = avatar;
     newUser.phoneNumber = phoneNumber;
     newUser.status = UserStatusEnum.PENDING;
     newUser.id = randomUUID();
 
     return newUser;
-  }
-
-  private hashPassword(password: string): string {
-    if (password) {
-      const salt = crypto.randomBytes(16).toString("hex");
-      return crypto
-        .pbkdf2Sync(password, salt, 1000, 10, "sha512")
-        .toString("hex");
-    }
   }
 }
 
