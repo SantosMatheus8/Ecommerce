@@ -26,6 +26,15 @@ export const getProduct = async (id:string) => {
   return await api.get(`products/v1/products/${id}`).then((res) => res)
 }
 
+export const getOrders = async () => {
+  return await api.get('orders/v1/orders').then((res) => res)
+}
+
+export const getOrder = async (id:string) => {
+  return await api.get(`orders/v1/orders/${id}`).then((res) => res)
+}
+
+
 export const deleteContact = async (id: number) => {
   return api.delete(`contacts/${id}`).then((res) => res)
 }

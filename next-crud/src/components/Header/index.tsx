@@ -21,6 +21,13 @@ export default function Header() {
                 </Link>
               </div>
               <div>
+                <Link href="/orders">
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Meus Pedidos
+                  </button>
+                </Link>
+              </div>
+              <div>
                 <Link href="/cart">
                   <p className="text-gray-700 text-lg font-semibold flex items-center">
                     Carrinho

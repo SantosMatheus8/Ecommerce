@@ -64,8 +64,8 @@ export class OrderUseCase {
   }
 
   private async checkIfOrderExists(id: string): Promise<Order> {
-    const orderExists = await this.orderRepository.findOneBy({ id });
-
+    const orderExists = await this.orderRepository.findOneById(id);
+    console.log("dasdasdasdasdas", orderExists);
     if (!orderExists) {
       throw new NotFoundError("Usuário não encontrado");
     }
