@@ -11,7 +11,6 @@ export default function PrincipalPage() {
   const loadProducts = async () => {
     const response = await getProducts()
     const contactsData = response.data
-    console.log('asdasdasdasd', contactsData)
     setProducts(contactsData)
   }
 
@@ -40,7 +39,6 @@ export default function PrincipalPage() {
     <section className="mx-auto max-w-[85%] flex flex-col items-center justify-center mt-20">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-16">
         {products?.rows?.map((product: any) => {
-          console.log(product)
           return (
             <Link href={`/teste/${product.id}`}>
               <div

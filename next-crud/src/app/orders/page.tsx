@@ -21,7 +21,6 @@ export default function MyOrdersList() {
     }
     returnOrders()
   }, [])
-  console.log(orders?.data?.rows)
   return (
     <section className="mb-20 mt-20">
       <div className="container mx-auto">
