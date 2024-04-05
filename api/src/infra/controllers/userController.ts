@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { CreateUser, QueryUsers, UserResponse, UsersOrderByEnum } from "../../domain/dtos/user";
 import { UserUseCase } from "../../use-cases/userUseCase";
-import { User, UserStatusEnum } from "../../domain/models/user";
+import { User } from "../../domain/models/user";
 import { QueryRequest } from "../dtos/request";
 import { OrderDirection, PaginatedFindConditions } from "../../domain/dtos/generic";
 
@@ -52,9 +52,6 @@ export class UserController {
     if (req.query.email) {
       query.conditions.email = req.query.email;
     }
-    if (req.query.status && UserStatusEnum[req.query.status]) {
-      query.conditions.status = UserStatusEnum[req.query.status];
-    }
     if (req.query.orderBy && UsersOrderByEnum[req.query.orderBy]) {
       query.orderBy = UsersOrderByEnum[req.query.orderBy];
     }
@@ -94,7 +91,7 @@ export class UserController {
       email: user.email,
       avatar: user.avatar,
       phoneNumber: user.phoneNumber,
-      status: user.status,
+      isAdmin: user.isAdmin,
     };
   }
 }

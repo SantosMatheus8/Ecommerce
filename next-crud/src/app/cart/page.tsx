@@ -2,7 +2,8 @@
 import { createOrder } from '@/services/ecommerceService'
 import { useCartStore } from '@/store/cart'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function ShoppingCart() {
   const { items, removeItem, clearItems } = useCartStore() as {
@@ -11,6 +12,7 @@ export default function ShoppingCart() {
     clearItems: () => void
   }
   const [quantities, setQuantities] = useState<number[]>(items.map(() => 1))
+  const { push } = useRouter()
 
   const updateQuantity = (index: number, value: number) => {
     const newQuantities = [...quantities]
@@ -32,6 +34,12 @@ export default function ShoppingCart() {
     (acc, curr, index) => acc + curr.price * quantities[index],
     0,
   )
+  useEffect(() => {
+    const userId = localStorage.getItem('userId')
+    if (!userId) {
+      push('/login')
+    }
+  }, [])
 
   return (
     <section className="mb-20 mt-20">
@@ -46,7 +54,7 @@ export default function ShoppingCart() {
               <div>
                 <p className="text-lg font-semibold">{item.name}</p>
                 <p className="text-gray-600">
-                  Preço: R${item.price.toFixed(2)}
+                  Preço: R${item.price.toFixed(2)},00
                 </p>
               </div>
               <div className="flex items-center">
@@ -78,7 +86,7 @@ export default function ShoppingCart() {
           <>
             <div className="mt-8">
               <p className="text-lg font-semibold">
-                Total: R${total.toFixed(2)}
+                Total: R${total.toFixed(2)},00
               </p>
             </div>
             <div className="flex justify-end mt-8">

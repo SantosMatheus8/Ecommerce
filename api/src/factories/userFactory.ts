@@ -1,4 +1,4 @@
-import { User, UserStatusEnum } from "../domain/models/user";
+import { User } from "../domain/models/user";
 import { UserRepository } from "../domain/ports/userRepository";
 import { UserController } from "../infra/controllers/userController";
 import { hash } from "../infra/encryption/encryption";
@@ -20,6 +20,7 @@ export class UserFactory {
     name: string,
     email: string,
     password: string,
+    isAdmin: boolean,
     avatar?: string,
     phoneNumber?: string
   ): User {
@@ -29,7 +30,7 @@ export class UserFactory {
     newUser.password = hash(password);
     newUser.avatar = avatar;
     newUser.phoneNumber = phoneNumber;
-    newUser.status = UserStatusEnum.PENDING;
+    newUser.isAdmin = isAdmin;
     newUser.id = randomUUID();
 
     return newUser;

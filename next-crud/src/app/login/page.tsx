@@ -15,9 +15,9 @@ export default function Login() {
       const token: any = await login(username, password)
       const decodedToken: any = decode(token.data.accessToken, { complete: true })
       const userId = decodedToken.payload.sub
-      
+      const isAdmin = decodedToken.payload.isAdmin
       localStorage.setItem('userId', userId)
-  
+      localStorage.setItem('isAdmin', isAdmin)
       push('/')
     } catch (error) {
       console.log(error)

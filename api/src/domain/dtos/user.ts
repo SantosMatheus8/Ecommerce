@@ -1,5 +1,3 @@
-import { UserStatusEnum } from "../models/user";
-
 export enum UsersOrderByEnum {
   name = "name",
   status = "status",
@@ -10,6 +8,7 @@ export type CreateUser = {
   name: string
   email: string
   password: string
+  isAdmin: boolean
   avatar?: string
   phoneNumber?: string
 };
@@ -18,9 +17,9 @@ export type UserResponse = {
   id: string
   name: string
   email: string
+  isAdmin: boolean
   avatar?: string
   phoneNumber?: string
-  status: UserStatusEnum
 };
 
 export type QueryUsers = {

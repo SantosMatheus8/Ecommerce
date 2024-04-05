@@ -26,6 +26,7 @@ export class AuthenticationUseCase {
       sub: user.id,
       email: user.email,
       name: user.name,
+      isAdmin: user.isAdmin,
       avatar: user.avatar,
     };
 

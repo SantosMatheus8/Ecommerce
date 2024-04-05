@@ -28,29 +28,19 @@ export class createBaseTables1709124725398 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'status',
-            type: 'varchar',
-            isNullable: false,
-          },
-          {
             name: 'avatar',
             type: 'varchar',
             isNullable: true,
           },
           {
+            name: 'is_admin',
+            type: 'boolean',
+            isNullable: false,
+          },
+          {
             name: 'phone_number',
             type: 'varchar',
             isNullable: true,
-          },
-          {
-            name: 'confirmed_at',
-            isNullable: true,
-            type: 'timestamp',
-          },
-          {
-            name: 'deleted_at',
-            isNullable: true,
-            type: 'timestamp',
           },
           {
             name: 'created_at',
@@ -202,24 +192,15 @@ export class createBaseTables1709124725398 implements MigrationInterface {
           onDelete: "CASCADE",
         },
       ],
-      // uniques: [
-      //   {
-      //     name: "UQ_product_orders",
-      //     columnNames: ["product_id", "order_id"],
-      //   },
-      // ],
     }),
     true
   );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('user_orders');
-    await queryRunner.dropTable('users');
     await queryRunner.dropTable('orders_products');
     await queryRunner.dropTable('orders');
-    await queryRunner.dropTable('routes_products');
     await queryRunner.dropTable('products');
-    await queryRunner.dropTable('routes');
+    await queryRunner.dropTable('users');
   }
 }

@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 export default function Header() {
   const { items } = useCartStore() as { items: any[] }
   const pathName = usePathname()
+  const isAdmin: any = localStorage.getItem('isAdmin')
 
   return (
     <>
@@ -16,7 +17,7 @@ export default function Header() {
               <div>
                 <Link href="/">
                   <p className="text-gray-700 text-lg font-semibold">
-                    Bar do Igao
+                    UauMarte
                   </p>
                 </Link>
               </div>
@@ -27,6 +28,17 @@ export default function Header() {
                   </button>
                 </Link>
               </div>
+              {isAdmin ? (
+                <div>
+                  <Link href="/createProducts">
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                      Cadastrar Produtos
+                    </button>
+                  </Link>
+                </div>
+              ) : (
+                <></>
+              )}
               <div>
                 <Link href="/cart">
                   <p className="text-gray-700 text-lg font-semibold flex items-center">

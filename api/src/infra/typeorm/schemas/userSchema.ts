@@ -1,5 +1,5 @@
 import { EntitySchema } from "typeorm";
-import { User, UserStatusEnum } from "../../../domain/models/user";
+import { User } from "../../../domain/models/user";
 
 export const userSchema = new EntitySchema<User>({
   target: User,
@@ -22,9 +22,9 @@ export const userSchema = new EntitySchema<User>({
     password: {
       type: String,
     },
-    status: {
-      type: "enum",
-      enum: UserStatusEnum,
+    isAdmin: {
+      name: "is_admin",
+      type: Boolean,
       nullable: false,
     },
     avatar: {
@@ -40,14 +40,6 @@ export const userSchema = new EntitySchema<User>({
     },
     updatedAt: {
       name: "updated_at",
-      type: Date,
-    },
-    deletedAt: {
-      name: "deleted_at",
-      type: Date,
-    },
-    confirmedAt: {
-      name: "confirmed_at",
       type: Date,
     },
   },

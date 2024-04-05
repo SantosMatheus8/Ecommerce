@@ -1,5 +1,5 @@
 import { CreateUser, UpdateUser } from "../domain/dtos/user";
-import { User, UserStatusEnum } from "../domain/models/user";
+import { User } from "../domain/models/user";
 import { UserRepository } from "../domain/ports/userRepository";
 import { Page, PaginatedFindConditions } from "../domain/dtos/generic";
 import { NotFoundError, UnprocessableEntityError } from "../domain/dtos/errors";
@@ -23,7 +23,7 @@ export class UserUseCase {
       user.name,
       user.email,
       user.password,
-      user.avatar,
+      user.isAdmin,
       user.phoneNumber
     );
 
@@ -45,15 +45,6 @@ export class UserUseCase {
 
   async delete(id: string): Promise<void> {
     const user = await this.checkIfUserExists(id);
-
-    if (
-      user.status !== UserStatusEnum.INACTIVE &&
-      user.status !== UserStatusEnum.PENDING
-    ) {
-      throw new UnprocessableEntityError(
-        "Só é possível remover usuários inativos ou pendentes"
-      );
-    }
 
     return await this.userRepository.delete(user);
   }

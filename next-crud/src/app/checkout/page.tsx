@@ -1,6 +1,17 @@
-import React from 'react'
+'use client'
+import { useRouter } from 'next/navigation'
+import React, { useEffect } from 'react'
 
 export default function Checkout() {
+  const {push} = useRouter()
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userId')
+    if (!userId) {
+      push('/login')
+    }
+  }, [])
+
   return (
     <div className="flex flex-col items-center justify-center max-h-screen mt-20">
       <svg

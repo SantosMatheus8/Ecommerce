@@ -1,10 +1,3 @@
-export enum UserStatusEnum {
-  PENDING = "PENDING",
-  ACTIVE = "ACTIVE",
-  INACTIVE = "INACTIVE",
-  BLOCKED = "BLOCKED",
-}
-
 export class User {
   private static _instance: User | null = null;
 
@@ -14,11 +7,9 @@ export class User {
   password: string;
   avatar?: string;
   phoneNumber?: string;
+  isAdmin: boolean;
   createdAt?: Date;
   updatedAt?: Date;
-  status?: UserStatusEnum;
-  deletedAt?: Date;
-  confirmedAt?: Date;
 
   static get instance(): User {
     if (User._instance === null) {
