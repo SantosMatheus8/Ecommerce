@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react'
 
 export default function PrincipalPage() {
   const [products, setProducts] = useState<any>([])
-  const {push} = useRouter()
+  const { push } = useRouter()
 
   const loadProducts = async () => {
     const response = await getProducts()
@@ -21,7 +21,7 @@ export default function PrincipalPage() {
       'https://images.kabum.com.br/produtos/fotos/518064/notebook-gamer-asus-tuf-gaming-f15-fx507vu-intel-core-i7-13620h-rtx-4050-16gb-ram-ssd-512gb-15-6-led-fhd-144hz-w11h-fx507vu-lp177w_1711033059_gg.jpg',
       'https://images.kabum.com.br/produtos/fotos/393218/notebook-asus-vivobook-15-amd-ryzen-5-4600h-8gb-ram-ssd-256gb-15-6-full-hd-amd-radeon-graphics-win-11-prata-metalico-m1502ia-ej251w_1710269786_gg.jpg',
       'https://images.kabum.com.br/produtos/fotos/477142/notebook-gamer-asus-vivobook-16x-intel-core-i5-12450h-8gb-ssd-512gb-tela-16-rtx-2050-win-11-preto-k3605zf-n1198w_1704277052_gg.jpg',
-      'https://images.kabum.com.br/produtos/fotos/467613/notebook-gamer-asus-rog-srix-g16-intel-core-i9-13980hx-16gb-ram-geforce-rtx-4060-ssd-512gb-16-fhd-win-11-cinza-g614jv-n3094w_1688414835_gg.jpg'
+      'https://images.kabum.com.br/produtos/fotos/467613/notebook-gamer-asus-rog-srix-g16-intel-core-i9-13980hx-16gb-ram-geforce-rtx-4060-ssd-512gb-16-fhd-win-11-cinza-g614jv-n3094w_1688414835_gg.jpg',
     ]
     const randomIndex = Math.floor(Math.random() * images.length)
     return images[randomIndex]
@@ -40,7 +40,7 @@ export default function PrincipalPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-16">
         {products?.rows?.map((product: any) => {
           return (
-            <Link href={`/teste/${product.id}`}>
+            <Link href={`/especificProduct/${product.id}`}>
               <div
                 key={product.id}
                 className="flex flex-col items-center justify-center max-w-xs bg-white rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out transform hover:scale-105 shadow-gray-400"

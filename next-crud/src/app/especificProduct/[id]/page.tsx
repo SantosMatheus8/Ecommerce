@@ -5,7 +5,7 @@ import { getProduct } from '@/services/ecommerceService'
 import Link from 'next/link'
 import { useCartStore } from '@/store/cart'
 
-export default function Teste() {
+export default function EspecificProduct() {
   const params = useParams()
   const [product, setProduct] = useState<any>([])
   const { addItem } = useCartStore() as { addItem: (product: any) => void }
