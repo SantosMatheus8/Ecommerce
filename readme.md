@@ -40,7 +40,7 @@ npm run dev
 
 ## Tela inicial
 
-![Captura de Tela 2024-04-05 às 16 12 56](https://github.com/SantosMatheus8/CrudContatos/assets/98671908/13b0daa1-7bdb-4df0-9c32-90af760c70dd)
+![Captura de Tela 2024-04-10 às 21 25 15](https://github.com/SantosMatheus8/Ecommerce/assets/98671908/d39c02c6-e277-4c7a-9c63-b2291d1e7598)
 
 ## Tela do produto específico
 
