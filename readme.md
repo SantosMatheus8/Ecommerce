@@ -44,24 +44,24 @@ npm run dev
 
 ## Tela do produto específico
 
-![Captura de Tela 2024-04-05 às 16 20 28](https://github.com/SantosMatheus8/CrudContatos/assets/98671908/19be2832-3e68-4dab-b1e3-b911d131bf1b)
+![Captura de Tela 2024-04-11 às 09 55 23](https://github.com/SantosMatheus8/Ecommerce/assets/98671908/3c031782-0381-4a96-970a-f072488de60d)
 
 ## Carrinho
 
-![Captura de Tela 2024-04-05 às 16 21 46](https://github.com/SantosMatheus8/CrudContatos/assets/98671908/fe38ca5a-6ca5-4fcd-9260-e4b728c7b5d0)
+![Captura de Tela 2024-04-11 às 09 56 15](https://github.com/SantosMatheus8/Ecommerce/assets/98671908/04f6aeb4-823c-48f1-992f-eaaea2233765)
 
 ## Compra finalizada
 
-![Captura de Tela 2024-04-05 às 16 22 15](https://github.com/SantosMatheus8/CrudContatos/assets/98671908/e25c67c7-dc3b-4545-94c0-df84ef26571e)
+![Captura de Tela 2024-04-11 às 09 56 39](https://github.com/SantosMatheus8/Ecommerce/assets/98671908/5c8971c8-7e47-4a47-897d-564ab35604e1)
 
 ## Meus pedidos
 
-![Captura de Tela 2024-04-05 às 16 22 38](https://github.com/SantosMatheus8/CrudContatos/assets/98671908/ec3ed17f-43b5-4561-8c24-f93ebc2f6814)
+![Captura de Tela 2024-04-11 às 09 56 59](https://github.com/SantosMatheus8/Ecommerce/assets/98671908/9bc5c72e-ef7c-447f-84bc-4603bdafa22f)
 
 ## Pedido detalhado
 
-![Captura de Tela 2024-04-05 às 16 23 10](https://github.com/SantosMatheus8/CrudContatos/assets/98671908/17bc93ae-fb42-41a3-9d89-a78ff47093d8)
+![Captura de Tela 2024-04-11 às 09 57 19](https://github.com/SantosMatheus8/Ecommerce/assets/98671908/38349f70-0f58-4ba7-80a4-e487ce18d542)
 
 ## Login
 
-![Captura de Tela 2024-04-05 às 16 23 49](https://github.com/SantosMatheus8/CrudContatos/assets/98671908/ea3bf3a7-b80e-4b95-b9f6-9927c5bcc184)
+![Captura de Tela 2024-04-11 às 09 57 41](https://github.com/SantosMatheus8/Ecommerce/assets/98671908/2fc62b18-cfa8-401d-80da-3ce687529a86)
